@@ -1,0 +1,75 @@
+{
+  "$schema": "./node_modules/json-server/schema.json",
+  "users": [
+    {
+      "id": 0,
+      "username": "Saif",
+      "email": "john@gmail.com",
+      "password": "1234",
+      "isAdmin": false
+    },
+    {
+      "id": 1,
+      "username": "zebra",
+      "email": "dodo",
+      "password": "1234",
+      "isAdmin": false
+    },
+    {
+      "username": "Nidoo",
+      "email": "Nida7@gmail.com",
+      "password": "123",
+      "id": "o9bn3NhBwRA7xHa1-BTjr",
+      "isAdmin": true
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "title": "iPhone 14 Pro",
+      "description": "Apple iPhone 14 Pro with A16 Bionic chip and 48MP camera.",
+      "price": 1299,
+      "image": "https://images.unsplash.com/photo-1678652197831-2d180705cd2c?w=500"
+    },
+    {
+      "id": 3,
+      "title": "MacBook Air M2",
+      "description": "Lightweight laptop with powerful M2 chip.",
+      "price": 1499,
+      "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500"
+    },
+    {
+      "id": 4,
+      "title": "Wireless Headphones",
+      "description": "Noise cancelling wireless headphones with deep bass.",
+      "price": 399,
+      "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"
+    },
+    {
+      "id": 6,
+      "title": "Canon EOS DSLR Camera",
+      "description": "Capture professional-quality photos with high resolution sensor.",
+      "price": 899,
+      "image": "https://imgs.search.brave.com/ohh_XNg1yUbP6iUnLYCKa7eA20yCJy-Os2w3oAd3OY8/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/bW9zLmNtcy5mdXR1/cmVjZG4ubmV0L0cz/NjdCWnhTSjVjRVVo/OXpyQ1dGNWouanBn"
+    },
+    {
+      "id": 9,
+      "title": "iPhone 15 Pro",
+      "description": "Latest Apple flagship smartphone with advanced camera system.",
+      "price": 1199,
+      "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500"
+    }
+  ],
+  "cart": [
+    {
+      "id": 1,
+      "product_id": 1,
+      "Date": "27 june"
+    },
+    {
+      "id": 0,
+      "product_id": 0,
+      "Date": "27 july"
+    }
+  ]
+}

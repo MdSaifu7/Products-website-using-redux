@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 import { getAsyncProduct } from "./store/actions/productActions";
 const App = () => {
   const dispatch = useDispatch();
+  dispatch(currentUser());
   useEffect(() => {
-    dispatch(currentUser());
     dispatch(getAsyncProduct());
   }, []);
   return (

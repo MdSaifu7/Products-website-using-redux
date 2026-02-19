@@ -9,7 +9,7 @@ const Login = () => {
   const LoginHandler = (data) => {
     dispatch(asyncLoginUser(data));
     reset();
-    navigate("/products");
+    navigate("/");
   };
   return (
     <div className="w-full flex justify-center">

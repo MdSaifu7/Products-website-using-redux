@@ -24,6 +24,17 @@ export const asyncLogoutUser = () => async (dispatch) => {
   }
 };
 
+export const asyncupdateuser = (updatedUser) => async (dispatch) => {
+  try {
+    await axios.patch(`/users/` + updatedUser.id, updatedUser);
+
+    dispatch(loadUser(updatedUser));
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const asyncLoginUser = (user) => async () => {
   try {
     const res = await axios.get(
@@ -39,6 +50,16 @@ export const asyncLoginUser = (user) => async () => {
 export const asyncRegisterUser = (user) => async () => {
   try {
     await axios.post("/users", user);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const asyncDeleteUser = (id) => async (dispatch) => {
+  try {
+    await axios.delete("/users/" + id);
+
+    dispatch(asyncLogoutUser());
   } catch (error) {
     console.log(error);
   }

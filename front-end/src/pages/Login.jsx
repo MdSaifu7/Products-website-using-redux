@@ -6,8 +6,8 @@ const Login = () => {
   const { register, reset, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const LoginHandler = (data) => {
-    dispatch(asyncLoginUser(data));
+  const LoginHandler = async (data) => {
+    await dispatch(asyncLoginUser(data));
     reset();
     navigate("/");
   };

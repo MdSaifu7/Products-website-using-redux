@@ -11,6 +11,7 @@ const Register = () => {
   const RegisterHandler = (data) => {
     data.id = nanoid();
     data.isAdmin = false;
+    data.cart = [];
     dispatch(asyncRegisterUser(data));
     // const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
     // existingUsers.push(data);

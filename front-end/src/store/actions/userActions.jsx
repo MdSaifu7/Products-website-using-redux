@@ -35,13 +35,14 @@ export const asyncupdateuser = (updatedUser) => async (dispatch) => {
   }
 };
 
-export const asyncLoginUser = (user) => async () => {
+export const asyncLoginUser = (user) => async (dispatch) => {
   try {
     const res = await axios.get(
       `/users?email=${user.email}&password=${user.password}`
     );
 
     localStorage.setItem("user", JSON.stringify(res.data[0]));
+    dispatch(currentUser());
   } catch (error) {
     console.log(error);
   }
@@ -64,3 +65,13 @@ export const asyncDeleteUser = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
+// export const asyncAddToCart = (user) => async (dispatch) => {
+//   try {
+//     await axios.patch("/users/" + user.id, user);
+//     localStorage.setItem("user", JSON.stringify(user));
+//     dispatch(currentUser());
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

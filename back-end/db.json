@@ -6,6 +6,7 @@
       "username": "Saif",
       "email": "john@gmail.com",
       "password": "1234",
+      "cart": [],
       "isAdmin": false
     },
     {
@@ -13,6 +14,7 @@
       "username": "zebra",
       "email": "dodo",
       "password": "1234",
+      "cart": [],
       "isAdmin": false
     },
     {
@@ -20,6 +22,7 @@
       "email": "Nida7@gmail.com",
       "password": "123",
       "id": "hQqtVvF7QsouFiWPSdSEW",
+      "cart": [],
       "isAdmin": true
     }
   ],
@@ -58,18 +61,6 @@
       "description": "Latest Apple flagship smartphone with advanced camera system.",
       "price": 1199,
       "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500"
-    }
-  ],
-  "cart": [
-    {
-      "id": 1,
-      "product_id": 1,
-      "Date": "27 june"
-    },
-    {
-      "id": 0,
-      "product_id": 0,
-      "Date": "27 july"
     }
   ]
 }

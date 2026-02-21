@@ -11,6 +11,7 @@ import ProfileUser from "../pages/user/ProfileUser";
 import PageNotFound from "../PageNotFound";
 import AuthWrapper from "./AuthWrapper";
 import LoginWrapper from "./loginWrapper";
+import Cart from "../pages/user/Cart";
 const Mainroutes = () => {
   const user = useSelector((state) => state.userReducer.data);
   console.log(user);
@@ -43,6 +44,15 @@ const Mainroutes = () => {
         element={
           <AuthWrapper>
             <CreateProduct />
+          </AuthWrapper>
+        }
+      />
+      {/* cart */}
+      <Route
+        path="/cart"
+        element={
+          <AuthWrapper>
+            <Cart />
           </AuthWrapper>
         }
       />

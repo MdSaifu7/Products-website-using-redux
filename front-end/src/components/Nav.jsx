@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const Nav = () => {
-  const user = useSelector((state) => state.userReducer);
+  const user = useSelector((state) => state.userReducer.data);
 
   // const logOutUser = () => {
   //   dispatch(asyncLogoutUser());
@@ -13,9 +13,9 @@ const Nav = () => {
     <nav className="flex justify-center item-center gap-x-25 p-5 mb-5">
       <NavLink to="/">Home</NavLink>
 
-      {user.data ? (
+      {user ? (
         <>
-          {user.data.isAdmin ? (
+          {user.isAdmin ? (
             <NavLink to="/admin/create-product">Create product</NavLink>
           ) : (
             ""
@@ -29,6 +29,7 @@ const Nav = () => {
           >
             Log Out
           </button> */}
+          <NavLink to="/cart">Cart</NavLink>
         </>
       ) : (
         <NavLink to="/login">Login</NavLink>

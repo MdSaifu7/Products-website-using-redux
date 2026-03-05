@@ -4,11 +4,6 @@ import { NavLink } from "react-router-dom";
 const Nav = () => {
   const user = useSelector((state) => state.userReducer.data);
 
-  // const logOutUser = () => {
-  //   dispatch(asyncLogoutUser());
-  //   navigate("/login");
-  // };
-
   return (
     <nav className="flex justify-center item-center gap-x-25 p-5 mb-5">
       <NavLink to="/">Home</NavLink>
@@ -21,14 +16,7 @@ const Nav = () => {
             ""
           )}
           <NavLink to="/admin/user-profile">Setting</NavLink>
-          {/* <button
-            onClick={() => {
-              logOutUser();
-            }}
-            className="text-red-600 font-medium"
-          >
-            Log Out
-          </button> */}
+
           <NavLink to="/cart">Cart</NavLink>
         </>
       ) : (

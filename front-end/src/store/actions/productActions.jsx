@@ -6,7 +6,6 @@ export const getAsyncProduct = () => async (dispatch) => {
   const res = await axios.get("/products");
 
   dispatch(loadproduct(res.data));
-  console.log(res.data);
 };
 
 export const asyncCreateProduct = (product) => async (dispatch) => {

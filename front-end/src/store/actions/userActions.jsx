@@ -37,20 +37,21 @@ export const asyncupdateuser = (updatedUser) => async (dispatch) => {
 
 export const asyncLoginUser = (user) => async (dispatch) => {
   try {
-    const res = await axios.get(
-      `/users?email=${user.email}&password=${user.password}`
-    );
+    const res = await axios.post(`/auth/login`, user);
+    console.log(res.data.user);
 
-    localStorage.setItem("user", JSON.stringify(res.data[0]));
+    localStorage.setItem("user", JSON.stringify(res.data.user));
     dispatch(currentUser());
+    return true;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
+    return false;
   }
 };
 
 export const asyncRegisterUser = (user) => async () => {
   try {
-    await axios.post("/users", user);
+    await axios.post("auth/register", user);
   } catch (error) {
     console.log(error);
   }

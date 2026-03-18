@@ -3,7 +3,7 @@ import { loadproduct } from "../reducers/productSlice";
 // import { loadUser } from "../reducers/userSlice";
 
 export const getAsyncProduct = () => async (dispatch) => {
-  const res = await axios.get("/products");
+  const res = await axios.get("/gadgets/products");
 
   dispatch(loadproduct(res.data));
 };

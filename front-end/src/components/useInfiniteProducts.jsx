@@ -8,21 +8,24 @@ const useInfiniteProducts = () => {
   const dispatch = useDispatch();
 
   const fetchProducts = async () => {
+    // const { data } = await axios.get(
+    //   `/products?_start=${products.length}&_limit=6`
+    // );
     const { data } = await axios.get(
-      `/products?_start=${products.length}&_limit=6`
+      `/gadgets/products?skip=${products.length}&limit=6`
     );
-
-    if (data.length == 0) {
+    console.log(data);
+    const comingProducts = data.products;
+    if (comingProducts.length == 0) {
       SetHasMore(false);
       return;
     }
 
-    await dispatch(loadproduct([...products, ...data]));
+    await dispatch(loadproduct([...products, ...comingProducts]));
   };
 
   useEffect(() => {
     fetchProducts();
-    
   }, []);
   return { fetchProducts, hasMore, products };
 };

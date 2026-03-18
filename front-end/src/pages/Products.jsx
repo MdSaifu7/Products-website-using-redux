@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useInfiniteProducts from "../components/useInfiniteProducts";
 import { Link } from "react-router-dom";
 import { asyncupdateuser } from "../store/actions/userActions";
@@ -11,7 +11,7 @@ const Products = () => {
   const user = useSelector((state) => state.userReducer.data);
   const { products, hasMore, fetchProducts } = useInfiniteProducts();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const cartHandler = (user, product) => {
     if (!user) {
       navigate("/login");
@@ -39,7 +39,7 @@ const Products = () => {
             key={product.id}
             className="flex flex-col gap-2 w-1/4 text-[18px] border p-2 rounded"
           >
-            <img className="w-full h-[18vh]" src={product.image} />
+            <img className="w-full h-[18vh]" src={product.imageUrl} />
             <h1>{product.title}</h1>
             <p>$ {product.price}</p>
             <h1>{product.description.slice(0, 100)}...</h1>

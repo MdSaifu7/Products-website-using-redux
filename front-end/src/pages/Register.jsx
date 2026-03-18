@@ -12,11 +12,9 @@ const Register = () => {
     data.id = nanoid();
     data.isAdmin = false;
     data.cart = [];
+
     dispatch(asyncRegisterUser(data));
-    // const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-    // existingUsers.push(data);
-    // localStorage.setItem("users", JSON.stringify(existingUsers));
-    // console.log("Registered User:", data);
+
     reset();
     navigate("/login");
   };

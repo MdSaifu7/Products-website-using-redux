@@ -1,18 +1,24 @@
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { asyncLoginUser } from "../store/actions/userActions";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 const Login = () => {
   const { register, reset, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [userLoggedIn, setUserLoggedIn] = useState(null);
   const LoginHandler = async (data) => {
-    await dispatch(asyncLoginUser(data));
-    reset();
-    navigate("/");
+    const success = await dispatch(asyncLoginUser(data));
+
+    setUserLoggedIn(success);
+    if (success) {
+      navigate("/");
+      reset();
+    }
   };
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex flex-col items-center  ">
       <form
         onSubmit={handleSubmit(LoginHandler)}
         className="w-1/2 py-5 gap-3 flex flex-col justify-center items-center px-10 border-2 rounded-2xl"
@@ -40,8 +46,10 @@ const Login = () => {
           </Link>
         </p>
       </form>
+      {userLoggedIn==false && <p className="text-3xl text-red-400">Invalid email or password</p>}
     </div>
-  );
+    )
+  
 };
 
 export default Login;

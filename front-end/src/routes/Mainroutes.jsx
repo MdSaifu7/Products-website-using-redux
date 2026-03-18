@@ -8,7 +8,7 @@ const ProductDetails = lazy(() => import("../pages/admin/ProductDetails"));
 const ProfileUser = lazy(() => import("../pages/user/ProfileUser"));
 const PageNotFound = lazy(() => import("../PageNotFound"));
 const AuthWrapper = lazy(() => import("./AuthWrapper"));
-const LoginWrapper = lazy(() => import("./loginWrapper"));
+const LoginWrapper = lazy(() => import("./LoginWrapper"));
 const Cart = lazy(() => import("../pages/user/Cart"));
 
 const Mainroutes = () => {

@@ -4,15 +4,16 @@ import { loadproduct } from "../reducers/productSlice";
 
 export const getAsyncProduct = () => async (dispatch) => {
   const res = await axios.get("/gadgets/products");
+  console.log("Get async product call");
+  console.log(res.data);
 
-  dispatch(loadproduct(res.data));
+  dispatch(loadproduct(res.data.products));
 };
 
 export const asyncCreateProduct = (product) => async (dispatch) => {
   try {
-    const res = await axios.post("/gadgets/create/product", product);
-    // dispatch(getAsyncProduct());
-    console.log(res);
+    await axios.post("/gadgets/create/product", product);
+    dispatch(getAsyncProduct());
   } catch (error) {
     console.log(error);
   }
@@ -20,7 +21,13 @@ export const asyncCreateProduct = (product) => async (dispatch) => {
 
 export const asyncUpdateProduct = (product) => async (dispatch) => {
   try {
-    const res = await axios.patch("/products/" + product.id, product);
+    let id;
+    if (product instanceof FormData) {
+      id = product.get("_id");
+    } else {
+      id = product._id;
+    }
+    const res = await axios.patch("/gadgets/update/product/" + id, product);
     dispatch(getAsyncProduct());
     console.log(res);
   } catch (error) {

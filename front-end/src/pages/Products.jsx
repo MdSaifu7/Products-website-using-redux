@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import useInfiniteProducts from "../components/useInfiniteProducts";
 import { Link } from "react-router-dom";
-import { asyncupdateuser, asyncCart } from "../store/actions/userActions";
+import { asyncCart } from "../store/actions/userActions";
 import { Suspense } from "react";
 
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -12,7 +12,7 @@ const Products = () => {
   const { products, hasMore, fetchProducts } = useInfiniteProducts();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  console.log(products);
   const cartHandler = (user, product) => {
     if (!user) {
       navigate("/login");
@@ -29,7 +29,7 @@ const Products = () => {
       copyuser.cart[x].quantity += 1;
     }
     console.log("copyuser after cart update");
-    console.log(copyuser);
+
     dispatch(asyncCart(copyuser));
   };
 
@@ -38,8 +38,8 @@ const Products = () => {
       products.map((product) => {
         return (
           <div
-            id={product.id}
-            key={product.id}
+            id={product._id}
+            key={product._id}
             className="flex flex-col w-full sm:w-[47%] md:w-[31%] lg:w-[23%] bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
           >
             <img className="w-full h-52 object-cover" src={product.imageUrl} />
@@ -63,7 +63,7 @@ const Products = () => {
               </button>
               <Link
                 className="w-full text-center block text-xs text-slate-400 hover:text-slate-700 underline underline-offset-2 transition-colors mt-0.5"
-                to={`/admin/product/${product.id}`}
+                to={`/admin/product/${product._id}`}
               >
                 More info
               </Link>

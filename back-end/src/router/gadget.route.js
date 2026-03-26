@@ -20,9 +20,40 @@ router.get("/products", async (req, res) => {
   });
 });
 
-router.post("/create/product", upload.single("image"), async (req, res) => {
-  console.log("create-product-hit");
+router.patch(
+  "/update/product/:id",
+  upload.single("image"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { title, price, description } = req.body;
+    const updateProduct = {
+      title,
+      price,
+      description,
+    };
 
+    if (req.file) {
+      const img = req.file;
+      const { url } = await uploadFile(img.buffer, title, true);
+      updateProduct.imageUrl = url;
+    }
+    try {
+      const product = await gadgetModel.findOneAndUpdate(
+        { _id: id },
+        { $set: updateProduct },
+        { new: true }
+      );
+      res.status(200).json({
+        message: "Product updated successfully",
+        product,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+router.post("/create/product", upload.single("image"), async (req, res) => {
   const { id, price, title, description, image } = req.body;
   const img = req.file;
 

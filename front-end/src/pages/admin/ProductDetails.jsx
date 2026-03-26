@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,30 +6,44 @@ import {
   asyncDeleteProduct,
   asyncUpdateProduct,
 } from "../../store/actions/productActions";
+import compressImage from "../../utility/compress.img";
+
 const ProductDetails = () => {
-  const params = useParams();
-  const id = params.id;
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const allProducts = useSelector((state) => state.productReducer);
-  const product = allProducts?.data?.find((p) => p.id == id);
   const navigate = useNavigate();
+  const allProducts = useSelector((state) => state.productReducer);
+
+  const product = allProducts?.data?.find((p) => p._id == id);
   const user = useSelector((state) => state.userReducer.data);
+  const [preview, setPreview] = useState(null);
 
   const { register, reset, handleSubmit } = useForm({
     defaultValues: {
-      image: product?.image,
+      image: product?.imageUrl,
       title: product?.title,
       price: product?.price,
       description: product?.description,
-      category: product?.category,
     },
   });
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  const UpdateProductHandler = (updatedProduct) => {
-    updatedProduct.id = product.id;
-    dispatch(asyncUpdateProduct(updatedProduct));
-    reset();
+
+  const UpdateProductHandler = async (updatedProduct) => {
+    const fromData = new FormData();
+    const compressedImg = preview ? await compressImage(preview, 0.5) : null;
+    fromData.append("title", updatedProduct.title);
+    fromData.append("price", updatedProduct.price);
+    fromData.append("description", updatedProduct.description);
+    fromData.append("_id", product._id);
+    if (preview) {
+      fromData.append("image", compressedImg);
+    }
+    await dispatch(asyncUpdateProduct(fromData));
+    reset({
+      title: updatedProduct.title,
+      price: updatedProduct.price,
+      description: updatedProduct.description,
+    });
+    setPreview(null);
   };
 
   const deleteProductHandler = (id) => {
@@ -37,105 +51,114 @@ const ProductDetails = () => {
     navigate("/products");
   };
 
-  return product ? (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex  gap-1">
-        <div className="w-full bg-white flex-col rounded-3xl shadow-2xl overflow-hidden">
-          {/* Product Image Section */}
-          <div className="bg-gray-50 flex items-center justify-center p-4">
-            <img
-              src={product.image}
-              alt={product.title}
-              className="w-full max-h-[300px] object-contain hover:scale-105 transition duration-500"
-            />
-          </div>
+  const handleImage = (e) => {
+    setPreview(e.target.files[0]);
+  };
 
-          {/* Product Details Section */}
-          <div className="p-4 flex flex-col justify-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-6">
-              {product.title}
-            </h1>
+  if (!product)
+    return (
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center text-stone-400 text-sm tracking-widest uppercase">
+        Loading…
+      </div>
+    );
 
-            <p className="text-gray-600 text-lg mb-4 leading-relaxed">
-              {product.description}
-            </p>
-
-            <div className="text-3xl font-bold text-green-600 mb-8">
-              ${product.price}
-            </div>
-
-            <div className="flex gap-4">
-              <button className="flex-1 bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition">
-                Buy Now
-              </button>
-
-              <button className="flex-1 bg-pink-600 text-white py-3 rounded-xl hover:bg-pink-700 transition">
-                Add to Cart
-              </button>
-              <button
-                onClick={() => {
-                  deleteProductHandler(product.id);
-                }}
-                className="flex-1 bg-red-600 text-white py-3 rounded-xl hover:bg-pink-700 transition"
-              >
-                Delete Product
-              </button>
-            </div>
-          </div>
+  return (
+    <div className="min-h-screen bg-stone-50 flex items-start justify-center px-4 py-12 gap-8">
+      {/* Left — Product Info */}
+      <div className="w-full max-w-lg">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-light text-stone-900 tracking-tight">
+            {product.title}
+          </h1>
+          <div className="mt-4 h-px bg-stone-200 w-16" />
         </div>
-        {/* form div */}
-        {user && user.isAdmin ? (
-          <div className=" w-full">
-            <form
-              onSubmit={handleSubmit(UpdateProductHandler)}
-              className="w-full bg-gray-700 py-5 gap-3 flex flex-col justify-center items-center border-2 rounded-2xl shadow-lg"
-            >
-              <h2 className="text-3xl font-bold mb-4">Update Product</h2>
 
-              <input
-                {...register("image", { required: true })}
-                className="outline-0 border-b w-3/4 p-1 text-2xl"
-                type="text"
-                placeholder="Image url"
-              />
+        {/* Image */}
+        <div className="w-full bg-white border border-stone-100 rounded-lg overflow-hidden mb-8">
+          <img
+            src={product.imageUrl}
+            alt={product.title}
+            className="w-full max-h-72 object-contain p-6"
+          />
+        </div>
 
-              <input
-                {...register("title", { required: true })}
-                className="outline-0 border-b w-3/4 p-1 text-2xl"
-                type="text"
-                placeholder="Title"
-              />
-              <input
-                {...register("price", { required: true })}
-                className="outline-0 border-b w-3/4 p-1 text-2xl"
-                type="number"
-                placeholder="Price"
-              />
+        {/* Description */}
+        <p className="text-stone-500 text-base leading-relaxed mb-8">
+          {product.description}
+        </p>
 
+        {/* Price */}
+        <p className="text-3xl font-light text-stone-900 mb-8 text-center">
+          ${product.price}
+        </p>
+      </div>
+
+      {/* Right — Update Form (admin only) */}
+      {user?.isAdmin && (
+        <div className="w-full max-w-lg">
+          <div className="mb-8">
+            <p className="text-xs tracking-[0.2em] uppercase text-stone-400 font-medium mb-2">
+              Admin
+            </p>
+            <h2 className="text-3xl font-light text-stone-900 tracking-tight">
+              Update Product
+            </h2>
+            <div className="mt-4 h-px bg-stone-200 w-16" />
+          </div>
+
+          <form
+            onSubmit={handleSubmit(UpdateProductHandler)}
+            className="space-y-6"
+          >
+            <input
+              type="file"
+              className="text-black bg-yellow-500 p-4 rounded-2xl "
+              onChange={handleImage}
+            />
+
+            {[
+              { name: "title", type: "text", placeholder: "Title" },
+              { name: "price", type: "number", placeholder: "Price" },
+            ].map(({ name, type, placeholder }) => (
+              <div key={name}>
+                <label className="block text-xs tracking-widest uppercase text-stone-400 mb-2 font-medium">
+                  {placeholder}
+                </label>
+                <input
+                  {...register(name, { required: true })}
+                  type={type}
+                  step={type === "number" ? "0.01" : undefined}
+                  placeholder={placeholder}
+                  className="w-full bg-transparent border-b border-stone-200 focus:border-stone-700 py-3 text-stone-800 outline-none placeholder:text-stone-300"
+                />
+              </div>
+            ))}
+
+            <div>
+              <label className="block text-xs tracking-widest uppercase text-stone-400 mb-2 font-medium">
+                Description
+              </label>
               <textarea
                 {...register("description", { required: true })}
-                className="outline-0 border-b w-3/4 p-0 text-2xl"
-                placeholder="Enter decription here.."
-              ></textarea>
+                rows={4}
+                placeholder="Product description…"
+                className="w-full bg-transparent border-b border-stone-200 focus:border-stone-700 py-3 text-stone-800 outline-none resize-none placeholder:text-stone-300"
+              />
+            </div>
 
-              <input
-                {...register("category", { required: true })}
-                className="outline-0 border-b w-3/4 p-1 text-2xl"
-                type="text"
-                placeholder="category"
-              />
-              <input
-                className="border w-3/4 rounded-2xl text-xl my-3 py-2 bg-black text-white hover:bg-gray-800"
-                type="submit"
-                value="Update Product"
-              />
-            </form>
-          </div>
-        ) : null}
-      </div>
-    </>
-  ) : (
-    "Loading..."
+            <div className="h-px bg-stone-100" />
+
+            <button
+              type="submit"
+              className="w-full py-4 bg-stone-900 text-white text-sm tracking-widest uppercase hover:bg-stone-700 transition-colors duration-200"
+            >
+              Update Product
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
   );
 };
 

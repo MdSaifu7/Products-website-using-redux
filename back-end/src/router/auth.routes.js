@@ -86,7 +86,6 @@ router.patch("/user/cart", protectRoute, async (req, res) => {
 router.patch("/users/:id", upload.single("image"), async (req, res) => {
   const id = req.params.id;
 
-  console.log(req.body);
   const updateData = {
     username: req.body.username,
     email: req.body.email,

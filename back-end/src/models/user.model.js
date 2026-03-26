@@ -20,6 +20,10 @@ const useSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  image: {
+    type: String,
+    default: null,
+  },
 });
 
 const userModel = mongoose.model("user", useSchema);

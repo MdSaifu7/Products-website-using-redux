@@ -10,8 +10,8 @@ export const getAsyncProduct = () => async (dispatch) => {
 
 export const asyncCreateProduct = (product) => async (dispatch) => {
   try {
-    const res = await axios.post("/products", product);
-    dispatch(getAsyncProduct());
+    const res = await axios.post("/gadgets/create/product", product);
+    // dispatch(getAsyncProduct());
     console.log(res);
   } catch (error) {
     console.log(error);

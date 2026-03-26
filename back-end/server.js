@@ -1,8 +1,6 @@
-import app from "./src/app.js ";
-import { configDotenv } from "dotenv";
+import "./src/createConfig/env.js";
+import app from "./src/app.js";
 import connectDB from "./src/db/db.js";
-configDotenv();
-
 connectDB();
 
 app.listen(3000, () => {

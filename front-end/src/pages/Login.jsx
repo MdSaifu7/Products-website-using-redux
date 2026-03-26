@@ -1,4 +1,4 @@
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { asyncLoginUser } from "../store/actions/userActions";
 import { useDispatch } from "react-redux";
@@ -46,10 +46,11 @@ const Login = () => {
           </Link>
         </p>
       </form>
-      {userLoggedIn==false && <p className="text-3xl text-red-400">Invalid email or password</p>}
+      {userLoggedIn == false && (
+        <p className="text-3xl text-red-400">Invalid email or password</p>
+      )}
     </div>
-    )
-  
+  );
 };
 
 export default Login;

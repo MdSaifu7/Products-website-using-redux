@@ -12,7 +12,7 @@ const Products = () => {
   const { products, hasMore, fetchProducts } = useInfiniteProducts();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(products);
+
   const cartHandler = (user, product) => {
     if (!user) {
       navigate("/login");
@@ -28,7 +28,6 @@ const Products = () => {
     } else {
       copyuser.cart[x].quantity += 1;
     }
-    console.log("copyuser after cart update");
 
     dispatch(asyncCart(copyuser));
   };

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { asyncRegisterUser } from "../store/actions/userActions";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import compressImage from "../utility/compress.img";
 
 const Register = () => {
@@ -19,8 +20,8 @@ const Register = () => {
     formData.append("image", compressedImage, "compressed.jpg"); // 🔥 IMPORTANT
     formData.append("nanoid", nanoid());
 
-    dispatch(asyncRegisterUser(formData));
-
+    await dispatch(asyncRegisterUser(formData));
+    toast.success("Account created successfully");
     reset();
     navigate("/login");
   };

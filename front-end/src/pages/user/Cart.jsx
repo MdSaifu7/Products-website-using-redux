@@ -7,36 +7,23 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const incrementQuantity = (user, indx) => {
-    const copyUser = {
-      ...user,
-      cart: user.cart.map((ci) => ({ ...ci })),
-    };
-
+    const copyUser = { ...user, cart: user.cart.map((ci) => ({ ...ci })) };
     copyUser.cart[indx].quantity += 1;
     dispatch(asyncCart(copyUser));
   };
 
   const decrementQuantity = (user, indx) => {
-    const copyUser = {
-      ...user,
-      cart: user.cart.map((ci) => ({ ...ci })),
-    };
-
+    const copyUser = { ...user, cart: user.cart.map((ci) => ({ ...ci })) };
     if (copyUser.cart[indx].quantity === 1) {
       copyUser.cart.splice(indx, 1);
     } else {
       copyUser.cart[indx].quantity -= 1;
     }
-
     dispatch(asyncCart(copyUser));
   };
 
   const removeCartHandler = (user, indx) => {
-    const copyUser = {
-      ...user,
-      cart: user.cart.map((ci) => ({ ...ci })),
-    };
-
+    const copyUser = { ...user, cart: user.cart.map((ci) => ({ ...ci })) };
     copyUser.cart.splice(indx, 1);
     dispatch(asyncCart(copyUser));
   };
@@ -49,104 +36,113 @@ const Cart = () => {
   const totalItems = user?.cart?.reduce((acc, item) => acc + item.quantity, 0);
 
   const renderProducts = user?.cart?.length ? (
-    user.cart.map((product, indx) => {
-      return (
-        <div
-          key={product.id}
-          className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white shadow-md rounded-xl p-4"
-        >
-          {/* Image */}
-          <img
-            src={product.imageUrl}
-            alt={product.title}
-            className="w-[120px] h-[120px] object-contain bg-gray-100 rounded-lg"
-          />
+    user.cart.map((product, indx) => (
+      <div
+        key={product.id}
+        className="flex flex-col md:flex-row items-center gap-5 bg-white border border-gray-100 rounded-2xl p-5 shadow-sm"
+      >
+        {/* Image */}
+        <img
+          src={product.imageUrl}
+          alt={product.title}
+          className="w-[100px] h-[100px] object-contain bg-gray-50 rounded-xl p-2"
+        />
 
-          {/* Title + Price */}
-          <div className="flex-1 text-center md:text-left">
-            <h1 className="text-lg font-semibold text-gray-800">
-              {product.title}
-            </h1>
+        {/* Title + Price */}
+        <div className="flex-1 text-center md:text-left">
+          <h1 className="text-sm font-semibold text-gray-800">
+            {product.title}
+          </h1>
+          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">
+            Unit price: ${product.price}
+          </p>
+          <p className="text-xs text-amber-500 mt-1 font-medium">
+            Qty: {product.quantity}
+          </p>
+        </div>
 
-            <p className="text-gray-500 mt-1">Price: $ {product.price}</p>
-
-            {/* ✅ QUANTITY DISPLAY CLEARLY */}
-            <p className="text-md mt-2 text-blue-600 font-semibold">
-              Quantity: {product.quantity}
-            </p>
-          </div>
-
-          {/* Quantity Controls */}
-          <div className="flex items-center gap-3 border rounded-lg px-3 py-1 bg-gray-50">
-            <button
-              onClick={() => decrementQuantity(user, indx)}
-              className="text-lg font-bold px-2 hover:text-red-500"
-            >
-              −
-            </button>
-
-            {/* MAIN QUANTITY NUMBER */}
-            <span className="font-bold text-lg text-gray-800">
-              {product.quantity}
-            </span>
-
-            <button
-              onClick={() => incrementQuantity(user, indx)}
-              className="text-lg font-bold px-2 hover:text-green-500"
-            >
-              +
-            </button>
-          </div>
-
-          {/* Total Price */}
-          <div className="text-gray-700 font-semibold">
-            Total: $ {(product.price * product.quantity).toFixed(2)}
-          </div>
-
-          {/* Remove */}
+        {/* Quantity Controls */}
+        <div className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2">
           <button
-            onClick={() => removeCartHandler(user, indx)}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+            onClick={() => decrementQuantity(user, indx)}
+            className="text-gray-400 hover:text-red-400 text-lg font-bold transition"
           >
-            Remove
+            −
+          </button>
+          <span className="text-gray-800 font-semibold text-sm w-4 text-center">
+            {product.quantity}
+          </span>
+          <button
+            onClick={() => incrementQuantity(user, indx)}
+            className="text-gray-400 hover:text-amber-500 text-lg font-bold transition"
+          >
+            +
           </button>
         </div>
-      );
-    })
+
+        {/* Item Total */}
+        <div className="text-amber-600 font-semibold text-sm">
+          ${(product.price * product.quantity).toFixed(2)}
+        </div>
+
+        {/* Remove */}
+        <button
+          onClick={() => removeCartHandler(user, indx)}
+          className="text-[10px] tracking-widest uppercase font-semibold text-gray-400 hover:text-red-400 border border-gray-200 hover:border-red-200 px-4 py-2 rounded-xl transition"
+        >
+          Remove
+        </button>
+      </div>
+    ))
   ) : (
-    <h1 className="text-center text-xl text-gray-500 mt-10">
-      Your cart is empty 🛒
-    </h1>
+    <div className="text-center mt-20">
+      <p className="text-4xl mb-3">🛒</p>
+      <p className="text-gray-400 text-sm tracking-widest uppercase">
+        Your cart is empty
+      </p>
+    </div>
   );
 
   return (
-    <div className="w-full min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-8">Shopping Cart</h1>
+    <div
+      className="min-h-screen px-4 py-10"
+      style={{
+        backgroundColor: "#fafafa",
+        backgroundImage: "radial-gradient(#e5e7eb 1px, transparent 1px)",
+        backgroundSize: "20px 20px",
+      }}
+    >
+      <div className="max-w-3xl mx-auto">
+        {/* Header */}
+        <h1 className="text-2xl font-semibold text-gray-800 tracking-wide mb-8">
+          Shopping Cart
+        </h1>
 
-        <div className="flex flex-col gap-5">{renderProducts}</div>
+        {/* Cart Items */}
+        <div className="flex flex-col gap-4">{renderProducts}</div>
+
+        {/* Summary */}
         {user?.cart?.length > 0 && (
-          <div className="mt-10 bg-white shadow-lg rounded-xl p-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            {/* Left Side - Summary */}
+          <div className="mt-8 bg-white border border-gray-100 rounded-2xl px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-6 shadow-sm">
             <div>
-              <h2 className="text-xl font-semibold text-gray-800">
+              <h2 className="text-[10px] text-gray-400 tracking-widest uppercase mb-3">
                 Cart Summary
               </h2>
-
-              <p className="text-gray-600 mt-2">
-                Total Items: <span className="font-semibold">{totalItems}</span>
+              <p className="text-sm text-gray-500">
+                Total Items:{" "}
+                <span className="text-gray-800 font-semibold">
+                  {totalItems}
+                </span>
               </p>
-
-              <p className="text-gray-600">
+              <p className="text-sm text-gray-500 mt-1">
                 Total Price:{" "}
-                <span className="font-semibold text-lg text-green-600">
-                  $ {totalAmount.toFixed(2)}
+                <span className="text-amber-500 font-semibold text-base">
+                  ${totalAmount.toFixed(2)}
                 </span>
               </p>
             </div>
 
-            {/* Right Side - Button */}
-            <button className="bg-green-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 transition">
+            <button className="py-3 px-8 rounded-xl text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:brightness-105 hover:-translate-y-0.5 active:translate-y-0 transition-all shadow-md shadow-amber-200">
               Proceed to Checkout
             </button>
           </div>

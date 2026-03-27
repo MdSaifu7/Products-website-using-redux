@@ -8,8 +8,6 @@ export const currentUser = () => async (dispatch) => {
 
     if (currUser) {
       dispatch(loadUser(currUser));
-    } else {
-      console.log("User not found");
     }
   } catch (error) {
     console.log(error);
@@ -26,9 +24,6 @@ export const asyncLogoutUser = () => async (dispatch) => {
 };
 
 export const asyncupdateuser = (updatedUser) => async (dispatch) => {
-  // console.log("updated user ");
-  // console.log(updatedUser);
-
   try {
     let id;
 
@@ -38,10 +33,9 @@ export const asyncupdateuser = (updatedUser) => async (dispatch) => {
     } else {
       id = updatedUser._id;
     }
-    console.log(id);
 
     const user = await axios.patch("/auth/users/" + id, updatedUser);
-    // console.log(user.data.user);
+
     dispatch(loadUser(user.data.user));
     localStorage.setItem("user", JSON.stringify(user.data.user));
   } catch (error) {

@@ -47,9 +47,13 @@ router.post("/login", async (req, res) => {
   if (!isMatch) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
+  const token = jwt.sign(
+    { _id: user._id, isAdmin: user.isAdmin },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1d",
+    }
+  );
 
   res.cookie("token", token);
   res.status(200).json({

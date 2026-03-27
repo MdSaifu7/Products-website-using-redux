@@ -1,6 +1,5 @@
 import axios from "../../api/AxiosConfig";
 import { loadproduct } from "../reducers/productSlice";
-// import { loadUser } from "../reducers/userSlice";
 
 export const getAsyncProduct = () => async (dispatch) => {
   const res = await axios.get("/gadgets/products");
@@ -37,7 +36,7 @@ export const asyncUpdateProduct = (product) => async (dispatch) => {
 
 export const asyncDeleteProduct = (id) => async (dispatch) => {
   try {
-    await axios.delete("/products/" + id);
+    await axios.delete("/gadgets/products/" + id);
     dispatch(getAsyncProduct());
   } catch (error) {
     console.log(error);

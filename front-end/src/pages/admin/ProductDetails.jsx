@@ -11,9 +11,9 @@ import compressImage from "../../utility/compress.img";
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const allProducts = useSelector((state) => state.productReducer);
 
+  const allProducts = useSelector((state) => state.productReducer);
+  const navigate = useNavigate();
   const product = allProducts?.data?.find((p) => p._id == id);
   const user = useSelector((state) => state.userReducer.data);
   const [preview, setPreview] = useState(null);
@@ -46,9 +46,9 @@ const ProductDetails = () => {
     setPreview(null);
   };
 
-  const deleteProductHandler = (id) => {
-    dispatch(asyncDeleteProduct(id));
-    navigate("/products");
+  const deleteProductHandler = async (id) => {
+    await dispatch(asyncDeleteProduct(id));
+    navigate("/");
   };
 
   const handleImage = (e) => {
@@ -92,6 +92,14 @@ const ProductDetails = () => {
         <p className="text-3xl font-light text-stone-900 mb-8 text-center">
           ${product.price}
         </p>
+        <div>
+          <button
+            onClick={() => deleteProductHandler(product._id)}
+            className="py-2 px-4 bg-red-500 text-white text-sm tracking-widest uppercase hover:bg-red-600 transition-colors duration-200"
+          >
+            Delete Product
+          </button>
+        </div>
       </div>
 
       {/* Right — Update Form (admin only) */}

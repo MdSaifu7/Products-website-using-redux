@@ -19,7 +19,7 @@ const CreateProduct = () => {
 
   const CreateProductHandler = async (product) => {
     product.id = nanoid();
-    console.log(product);
+
     const compressedImage = await compressImage(product.Image[0], 0.7);
     const formData = new FormData();
     formData.append("id", product.id);

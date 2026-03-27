@@ -7,7 +7,9 @@ const protectRoute = function (req, res, next) {
   }
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET);
+
     req.body._id = decode._id;
+    req.body.isAdmin = decode.isAdmin;
     next();
   } catch (err) {
     console.log(err);

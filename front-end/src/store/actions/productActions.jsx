@@ -2,9 +2,13 @@ import axios from "../../api/AxiosConfig";
 import { loadproduct } from "../reducers/productSlice";
 
 export const getAsyncProduct = () => async (dispatch) => {
-  const res = await axios.get("/gadgets/products");
+  try {
+    const res = await axios.get("/gadgets/products");
 
-  dispatch(loadproduct(res.data.products));
+    dispatch(loadproduct(res.data.products));
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const asyncCreateProduct = (product) => async (dispatch) => {

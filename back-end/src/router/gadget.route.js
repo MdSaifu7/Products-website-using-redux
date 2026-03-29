@@ -28,22 +28,23 @@ router.patch(
   async (req, res) => {
     const { id } = req.params;
     const { title, price, description } = req.body;
-    if (!req.user.isAdmin) {
-      return res.status(403).json({ message: "Forbidden: Admins only" });
-    }
-
-    const updateProduct = {
-      title,
-      price,
-      description,
-    };
-
-    if (req.file) {
-      const img = req.file;
-      const { url } = await uploadFile(img.buffer, title, true);
-      updateProduct.imageUrl = url;
-    }
     try {
+      if (!req.user.isAdmin) {
+        return res.status(403).json({ message: "Forbidden: Admins only" });
+      }
+
+      const updateProduct = {
+        title,
+        price,
+        description,
+      };
+
+      if (req.file) {
+        const img = req.file;
+        const { url } = await uploadFile(img.buffer, title, true);
+        updateProduct.imageUrl = url;
+      }
+
       const product = await gadgetModel.findOneAndUpdate(
         { _id: id },
         { $set: updateProduct },

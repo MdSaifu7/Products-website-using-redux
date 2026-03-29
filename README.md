@@ -12,10 +12,12 @@ A full-stack e-commerce web application built with **React**, **Redux Toolkit**,
 ### 🏠 Home — Product Listing
 ![Home Page](./screenshots/home.png)
 
-### 👤 Profile — User Account
+### 👤 Profile — User Account<img width="1440" height="900" alt="Screenshot 2026-03-29 at 4 15 53 PM" src="https://github.com/user-attachments/assets/76a83cdf-2b7f-4657-a907-493d60d57ebb" />
+
 ![Profile Page]("https://github.com/user-attachments/assets/a88fafdc-a29f-4bd4-93e1-c2eea88f3921")
 
-### 🛒 Cart — Shopping Cart
+### 🛒 Cart — Shopping Cart<img width="1440" height="900" alt="Screenshot 2026-03-29 at 4 16 13 PM" src="https://github.com/user-attachments/assets/78a5cf95-326b-4e2e-888a-cc08252f67a6" />
+
 ![Cart Page](./screenshots/cart.png)
 
 ---

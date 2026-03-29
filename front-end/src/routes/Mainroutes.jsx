@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
-const SearchProducts = lazy(() => import("../pages/user/searchProducts"));
+const SearchProducts = lazy(() => import("../pages/user/SearchProducts"));
 const Products = lazy(() => import("../pages/Products"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));

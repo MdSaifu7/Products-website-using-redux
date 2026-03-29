@@ -25,16 +25,7 @@ export const asyncLogoutUser = () => async (dispatch) => {
 
 export const asyncupdateuser = (updatedUser) => async (dispatch) => {
   try {
-    let id;
-
-    // ✅ Check if it's FormData
-    if (updatedUser instanceof FormData) {
-      id = updatedUser.get("_id");
-    } else {
-      id = updatedUser._id;
-    }
-
-    const user = await axios.patch("/auth/users/" + id, updatedUser);
+    const user = await axios.patch("/auth/user/update", updatedUser);
 
     dispatch(loadUser(user.data.user));
     localStorage.setItem("user", JSON.stringify(user.data.user));

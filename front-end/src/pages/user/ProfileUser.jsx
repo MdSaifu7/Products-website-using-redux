@@ -14,6 +14,7 @@ const ProfileUser = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userReducer.data) || null;
+
   const [imageFile, setImageFile] = useState(null);
   const { register, handleSubmit } = useForm({
     defaultValues: {

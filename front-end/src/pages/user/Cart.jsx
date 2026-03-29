@@ -38,7 +38,7 @@ const Cart = () => {
   const renderProducts = user?.cart?.length ? (
     user.cart.map((product, indx) => (
       <div
-        key={product.id}
+        key={product._id}
         className="flex flex-col md:flex-row items-center gap-5 bg-white border border-gray-100 rounded-2xl p-5 shadow-sm"
       >
         {/* Image */}

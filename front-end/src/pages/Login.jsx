@@ -4,6 +4,7 @@ import { asyncLoginUser } from "../store/actions/userActions";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { toast } from "react-toastify";
+
 const Login = () => {
   const { register, reset, handleSubmit } = useForm();
   const dispatch = useDispatch();
@@ -13,70 +14,84 @@ const Login = () => {
   const LoginHandler = async (data) => {
     const success = await dispatch(asyncLoginUser(data));
     setUserLoggedIn(success);
+
     if (success) {
       navigate("/");
-      toast.success("Login Succesfully");
+      toast.success("Login Successfully", {
+        style: {
+          fontSize: "12px",
+          padding: "8px 12px",
+        },
+      });
       reset();
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-950 px-4">
+    <div className="min-h-screen bg-stone-50 flex items-center justify-center px-4">
       <form
         onSubmit={handleSubmit(LoginHandler)}
-        className="w-full max-w-sm bg-gray-900 border border-gray-800 rounded-2xl px-8 py-10 shadow-2xl flex flex-col items-center"
+        className="w-full max-w-md bg-white border border-stone-100 rounded-2xl px-6 sm:px-8 py-8 sm:py-10 shadow-sm"
       >
-        <h2 className="text-2xl font-semibold text-gray-100 tracking-wide mb-8 self-start">
-          Welcome Back
-        </h2>
+        {/* Heading */}
+        <div className="mb-8">
+          <h2 className="text-2xl sm:text-3xl font-light text-stone-900 tracking-tight">
+            Welcome Back
+          </h2>
+          <div className="mt-3 h-px bg-stone-200 w-16" />
+        </div>
 
-        <div className="w-full flex flex-col gap-4 mb-2">
-          <div className="flex flex-col gap-1">
-            <label className="text-[10px] text-gray-500 tracking-widest uppercase pl-1">
+        {/* Inputs */}
+        <div className="space-y-5">
+          {/* Email */}
+          <div>
+            <label className="block text-xs tracking-widest uppercase text-stone-400 mb-2 font-medium">
               Email
             </label>
             <input
               {...register("email", { required: true })}
               type="email"
               placeholder="you@example.com"
-              className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10 transition"
+              className="w-full bg-transparent border-b border-stone-200 focus:border-stone-700 py-3 text-stone-800 outline-none placeholder:text-stone-300 transition"
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label className="text-[10px] text-gray-500 tracking-widest uppercase pl-1">
+          {/* Password */}
+          <div>
+            <label className="block text-xs tracking-widest uppercase text-stone-400 mb-2 font-medium">
               Password
             </label>
             <input
               {...register("password", { required: true })}
               type="password"
               placeholder="••••••••"
-              className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/10 transition"
+              className="w-full bg-transparent border-b border-stone-200 focus:border-stone-700 py-3 text-stone-800 outline-none placeholder:text-stone-300 transition"
             />
           </div>
         </div>
 
+        {/* Error */}
         {userLoggedIn === false && (
-          <p className="text-red-400 text-xs mt-1 self-start pl-1">
+          <p className="text-red-500 text-xs mt-3">
             Invalid email or password.
           </p>
         )}
 
+        {/* Button */}
         <button
           type="submit"
-          className="w-full mt-4 py-3 rounded-xl text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-yellow-600 text-gray-950 hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0 transition-all shadow-lg shadow-amber-900/30"
+          className="w-full mt-6 py-3 bg-stone-900 text-white text-xs sm:text-sm tracking-widest uppercase hover:bg-stone-700 transition-colors duration-200"
         >
           Sign In
         </button>
 
-        <div className="w-full h-px bg-gray-800 my-5" />
+        {/* Divider */}
+        <div className="w-full h-px bg-stone-100 my-6" />
 
-        <p className="text-xs text-gray-500">
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors"
-          >
+        {/* Register Link */}
+        <p className="text-xs text-stone-500 text-center">
+          Don’t have an account?{" "}
+          <Link to="/register" className="text-stone-900 hover:underline">
             Register
           </Link>
         </p>

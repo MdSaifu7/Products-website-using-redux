@@ -27,8 +27,8 @@ router.patch(
   upload.single("image"),
   async (req, res) => {
     const { id } = req.params;
-    const { title, price, description, isAdmin } = req.body;
-    if (!isAdmin) {
+    const { title, price, description } = req.body;
+    if (!req.user.isAdmin) {
       return res.status(403).json({ message: "Forbidden: Admins only" });
     }
 
@@ -49,12 +49,21 @@ router.patch(
         { $set: updateProduct },
         { new: true }
       );
+      if (!product) {
+        return res.status(404).json({
+          message: "Product not found",
+        });
+      }
+
       res.status(200).json({
         message: "Product updated successfully",
         product,
       });
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({
+        message: "Server error",
+        error: error.message,
+      });
     }
   }
 );
@@ -64,48 +73,97 @@ router.post(
   protectRoute,
   upload.single("image"),
   async (req, res) => {
-    const { id, price, title, description, image, isAdmin } = req.body;
+    const { price, title, description } = req.body;
+    try {
+      if (!req.user.isAdmin) {
+        return res.status(403).json({ message: "Forbidden: Admins only" });
+      }
 
-    if (!isAdmin) {
-      return res.status(403).json({ message: "Forbidden: Admins only" });
+      if (!price || !title || !description) {
+        return res.status(400).json({
+          message: "All fields are required",
+        });
+      }
+      if (!req.file) {
+        return res.status(400).json({
+          message: "Image is required",
+        });
+      }
+      const img = req.file;
+
+      const { url } = await uploadFile(img.buffer, title, true);
+      const product = await gadgetModel.create({
+        price,
+        title,
+        description,
+        imageUrl: url,
+      });
+      return res.status(201).json({
+        message: "Product created successfully",
+        product,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Product could not be created!",
+        error: error.message,
+      });
     }
-
-    const img = req.file;
-
-    const { url } = await uploadFile(img.buffer, title, true);
-    const product = await gadgetModel.create({
-      price,
-      title,
-      description,
-      imageUrl: url,
-    });
-    res.status(201).json({
-      message: "Product created successfully",
-      product,
-    });
   }
 );
 
-router.delete("/products/:id", async (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(401).json({ message: "Not authenticated" });
-  }
-  const decode = jwt.verify(token, process.env.JWT_SECRET);
-  const isAdmin = decode.isAdmin;
-  if (!isAdmin) {
-    return res.status(403).json({ message: "Forbidden: Admins only" });
-  }
+router.delete("/products/:id", protectRoute, async (req, res) => {
   const { id } = req.params;
-  console.log(id);
-
   try {
-    await gadgetModel.findOneAndDelete({ _id: id });
-    res.status(200).json({
+    if (!req.user?.isAdmin) {
+      return res.status(403).json({ message: "Forbidden: Admins only" });
+    }
+    const product = await gadgetModel.findOneAndDelete({ _id: id });
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    return res.status(200).json({
       message: "Product deleted successfully",
     });
   } catch (error) {
-    console.log(error);
+    return res.status(500).json({
+      message: "Product deletion failed",
+      error: error.message,
+    });
+  }
+});
+
+router.get("/search", async (req, res) => {
+  const { search } = req.query;
+
+  try {
+    if (!search || search.trim() === "") {
+      return res.status(400).json({
+        message: "Search query is required",
+      });
+    }
+
+    const results = await gadgetModel.find({
+      title: { $regex: search, $options: "i" },
+    });
+
+    if (results.length == 0) {
+      return res.status(404).json({
+        message: "No product found",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Product fetched successfully",
+      results,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Server error",
+      error: err.message,
+    });
   }
 });
 

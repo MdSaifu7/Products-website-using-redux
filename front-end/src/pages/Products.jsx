@@ -2,18 +2,22 @@ import { useDispatch, useSelector } from "react-redux";
 import useInfiniteProducts from "../components/useInfiniteProducts";
 import { Link } from "react-router-dom";
 import { asyncCart } from "../store/actions/userActions";
-import { Suspense } from "react";
-
+import { Suspense, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router-dom";
-
+import { getAsyncQueryProduct } from "../store/actions/queryProductActions";
+import { toast } from "react-toastify";
 const Products = () => {
   const user = useSelector((state) => state.userReducer.data);
-  const { products, hasMore, fetchProducts } = useInfiniteProducts();
+  let { products, hasMore, fetchProducts } = useInfiniteProducts();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const cartHandler = (user, product) => {
+  // ✅ NEW STATE
+  const [search, setSearch] = useState("");
+
+  const cartHandler = async (user, product) => {
     if (!user) {
       navigate("/login");
       return;
@@ -30,6 +34,12 @@ const Products = () => {
     }
 
     dispatch(asyncCart(copyuser));
+    toast.success("Product added to cart");
+  };
+
+  const searchProduct = async (search) => {
+    await dispatch(getAsyncQueryProduct(search));
+    navigate("/query/result");
   };
 
   const renderproduct =
@@ -62,7 +72,7 @@ const Products = () => {
               </button>
               <Link
                 className="w-full text-center block text-xs text-slate-400 hover:text-slate-700 underline underline-offset-2 transition-colors mt-0.5"
-                to={`/admin/product/${product._id}`}
+                to={`/product/detail/${product._id}`}
               >
                 More info
               </Link>
@@ -72,7 +82,7 @@ const Products = () => {
       })
     ) : (
       <h1 className="text-center w-full text-sm text-slate-400 py-20">
-        No products are there...
+        No products found...
       </h1>
     );
 
@@ -81,9 +91,27 @@ const Products = () => {
       <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight text-center mb-2">
         Products
       </h1>
-      <p className="text-center text-xs text-slate-400 tracking-widest uppercase mb-8">
+      <p className="text-center text-xs text-slate-400 tracking-widest uppercase mb-6">
         Browse our collection
       </p>
+
+      <div className="w-full flex justify-center mb-8 text-black gap-4 ">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full sm:w-[60%] md:w-[40%] px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 text-sm"
+        />
+        <button
+          className="text-m text-white bg-green-400 px-4 py-2 rounded-2xl"
+          onClick={() => {
+            searchProduct(search);
+          }}
+        >
+          Search
+        </button>
+      </div>
 
       <InfiniteScroll
         dataLength={products.length}

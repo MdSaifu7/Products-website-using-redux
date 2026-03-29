@@ -1,14 +1,16 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
+const SearchProducts = lazy(() => import("../pages/user/searchProducts"));
 const Products = lazy(() => import("../pages/Products"));
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const CreateProduct = lazy(() => import("../pages/admin/CreateProduct"));
-const ProductDetails = lazy(() => import("../pages/admin/ProductDetails"));
+const ProductDetail = lazy(() => import("../pages/admin/ProductDetail"));
 const ProfileUser = lazy(() => import("../pages/user/ProfileUser"));
 const PageNotFound = lazy(() => import("../PageNotFound"));
 const AuthWrapper = lazy(() => import("./AuthWrapper"));
 const LoginWrapper = lazy(() => import("./LoginWrapper"));
+// const ProductDetail = lazy(() => import("../pages/ProductDetail"));
 const Cart = lazy(() => import("../pages/user/Cart"));
 
 const Mainroutes = () => {
@@ -55,14 +57,15 @@ const Mainroutes = () => {
       />
 
       <Route
-        path="/admin/product/:id"
+        path="/product/detail/:id"
         element={
           <AuthWrapper>
-            <ProductDetails />
+            <ProductDetail />
           </AuthWrapper>
         }
       />
-
+      {/* <Route path="/product/detail/:id" element={<ProductDetail />} /> */}
+      <Route path="/query/result" element={<SearchProducts />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

@@ -9,6 +9,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://products-website-using-redux.vercel.app",
+    // origin: "http://localhost:5173",
     credentials: true,
   })
 );

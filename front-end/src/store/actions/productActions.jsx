@@ -3,8 +3,6 @@ import { loadproduct } from "../reducers/productSlice";
 
 export const getAsyncProduct = () => async (dispatch) => {
   const res = await axios.get("/gadgets/products");
-  console.log("Get async product call");
-  console.log(res.data);
 
   dispatch(loadproduct(res.data.products));
 };
@@ -26,9 +24,8 @@ export const asyncUpdateProduct = (product) => async (dispatch) => {
     } else {
       id = product._id;
     }
-    const res = await axios.patch("/gadgets/update/product/" + id, product);
+    await axios.patch("/gadgets/update/product/" + id, product);
     dispatch(getAsyncProduct());
-    console.log(res);
   } catch (error) {
     console.log(error);
   }

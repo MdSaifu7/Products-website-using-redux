@@ -24,7 +24,13 @@ router.post(
         });
       }
 
-      const result = await uploadFile(req.file.buffer, username);
+      const DEFAULT_AVATAR = "https://ik.imagekit.io/mzq8euita/dummy-image.png";
+
+      let imageUrl = DEFAULT_AVATAR;
+      if (req.file) {
+        const result = await uploadFile(req.file.buffer, username);
+        imageUrl = result.url;
+      }
 
       const hashPassword = await bcrypt.hash(password, 10);
       const user = await userModel.create({
@@ -33,7 +39,7 @@ router.post(
         password: hashPassword,
         isAdmin: false,
         cart: [],
-        image: result.url,
+        image: imageUrl,
       });
       return res.status(201).json({
         message: "User registered successfully",

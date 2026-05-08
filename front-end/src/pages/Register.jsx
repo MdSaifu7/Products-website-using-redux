@@ -16,7 +16,10 @@ const Register = () => {
   const RegisterHandler = async (data) => {
     const formData = new FormData();
 
-    const compressedImage = await compressImage(data.image[0], 0.5);
+    if (data.image && data.image[0]) {
+      const compressedImage = await compressImage(data.image[0], 0.5);
+      formData.append("image", compressedImage, "compressed.jpg");
+    }
 
     formData.append("username", data.username);
     formData.append("email", data.email);
@@ -113,7 +116,7 @@ const Register = () => {
               </span>
 
               <input
-                {...register("image", { required: true })}
+                {...register("image")}
                 type="file"
                 accept="image/*"
                 onChange={handleImage}

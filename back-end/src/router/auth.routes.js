@@ -47,7 +47,7 @@ router.post(
           username,
           email,
           isAdmin: false,
-          image: result.url,
+          image: imageUrl,
         },
       });
     } catch (err) {

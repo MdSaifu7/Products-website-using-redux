@@ -24,9 +24,15 @@ const Register = () => {
     formData.append("image", compressedImage, "compressed.jpg");
     formData.append("nanoid", nanoid());
     // formData.append("cart", []);
-    await dispatch(asyncRegisterUser(formData));
+    const success = await dispatch(asyncRegisterUser(formData));
 
-    toast.success("Account created successfully");
+    if (success) {
+      toast.success("Account created successfully");
+      reset();
+      navigate("/login");
+    } else {
+      toast.error("Registration failed. Please try again.");
+    }
     reset();
     navigate("/login");
   };

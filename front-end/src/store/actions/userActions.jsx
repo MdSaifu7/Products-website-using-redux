@@ -60,13 +60,13 @@ export const asyncLoginUser = (user) => async (dispatch) => {
 
 export const asyncRegisterUser = (user) => async () => {
   try {
-    await axios.post("auth/register", user, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+    await axios.post("/auth/register", user, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
+    return true;
   } catch (error) {
     console.log(error);
+    return false;
   }
 };
 

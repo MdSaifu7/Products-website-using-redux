@@ -8,8 +8,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://products-website-using-redux.vercel.app",
-    // origin: "http://localhost:5173",
+    origin: [
+      "https://products-website-using-redux.vercel.app",
+      "https://products-website-using-redux-dr810b012-mdsaifu7s-projects.vercel.app",
+    ],
     credentials: true,
   })
 );
